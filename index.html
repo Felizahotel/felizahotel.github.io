@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FELIZA - Menu</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
+body{background:#1A1A1A;color:#fff;padding-bottom:20px}
+.header{background:#111;padding:16px;text-align:center;border-bottom:3px solid #FFC700}
+.header h1{color:#FFC700;font-size:32px;letter-spacing:2px}
+.header p{font-size:12px;color:#ccc}
+.phones{margin-top:8px;display:flex;gap:8px;justify-content:center}
+.phones a{background:#FFC700;color:#000;padding:6px 14px;border-radius:20px;text-decoration:none;font-weight:bold;font-size:13px}
+.hero{margin:14px;border-radius:16px;border:1px solid #FFC700;text-align:center;padding:18px;background:#222}
+.hero h2{color:#FFC700;font-size:20px}
+.toggle{display:flex;justify-content:center;margin:10px auto;width:280px;border:1px solid #FFC700;border-radius:30px;overflow:hidden}
+.toggle button{flex:1;padding:12px;border:none;background:transparent;color:#FFC700;font-weight:bold;cursor:pointer;font-size:15px}
+.toggle button.active{background:#FFC700;color:#000}
+.toggle-note{text-align:center;color:#aaa;font-size:12px;margin-bottom:6px}
+.main-menu{display:flex;gap:8px;justify-content:center;padding:10px;flex-wrap:wrap}
+.main-menu button{padding:11px 18px;border-radius:25px;border:1px solid #FFC700;background:transparent;color:#FFC700;font-weight:bold;cursor:pointer}
+.main-menu button.active{background:#FFC700;color:#000}
+.sub-menu{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:6px 10px}
+.sub-menu button{padding:8px 14px;border-radius:20px;border:1px solid #555;background:#222;color:#fff;font-size:13px;cursor:pointer}
+.sub-menu button.active{background:#FFC700;color:#000;font-weight:bold}
+.section{padding:10px 14px}
+.section h3{color:#FFC700;text-align:center;margin:12px 0}
+.card{background:#222;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.card b{font-size:15px}
+.price{color:#FFC700;font-weight:bold;font-size:15px;text-align:right}
+.price small{display:block;color:#aaa;font-size:11px;font-weight:normal}
+.view{border:1px solid #FFC700;color:#FFC700;background:transparent;padding:6px 12px;border-radius:20px;font-size:12px;margin-top:4px}
+.book-box{background:#111;border:2px solid #FFC700;border-radius:16px;padding:18px;text-align:center;margin:14px}
+.book-box a{background:#FFC700;color:#000;padding:12px 20px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin-top:10px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="header"><h1>FELIZA</h1><p>Hotel & Suites & Event Centre • Obada</p>
+<div class="phones"><a href="tel:08159651512">📞 0815 965 1512</a><a href="tel:08159651606">📞 0815 965 1606</a></div></div>
+<div class="hero"><h2>EXPERIENCE LUXURY DINING</h2><p>Select your location for correct price</p></div>
+
+<!-- VIP / POOL SIDE - ONLY FOR DRINKS & FOOD -->
+<div id="location-toggle">
+<div class="toggle">
+<button id="btn-vip" class="active" onclick="setLocation('vip',this)">VIP</button>
+<button id="btn-pool" onclick="setLocation('pool',this)">POOL SIDE</button>
+</div>
+<p class="toggle-note">Toggles apply to Drinks & Food only</p>
+</div>
+
+<div class="main-menu">
+<button class="active" onclick="showMain('drinks',this)">DRINKS</button>
+<button onclick="showMain('food',this)">FOOD</button>
+<button onclick="showMain('rooms',this)">ROOMS</button>
+<button onclick="showMain('events',this)">EVENTS</button>
+</div>
+
+<div id="drinks">
+<div class="sub-menu">
+<button class="active" onclick="showSub('liquor',this)">Liquor</button>
+<button onclick="showSub('wines',this)">Wines & Champagne</button>
+<button onclick="showSub('beer',this)">Beer & Soft Drinks</button>
+<button onclick="showSub('cocktails',this)">Cocktails</button>
+<button onclick="showSub('mocktails',this)">Mocktails & Smoothies</button>
+<button onclick="showSub('tots',this)">Tots & Shots</button>
+</div>
+<div id="liquor" class="section sub"><h3>DRINKS > LIQUOR</h3><div id="liquor-list"></div><p style="text-align:center;color:#aaa;font-size:12px;margin-top:10px">Please order at the bar / with your waiter.</p></div>
+<div id="wines" class="section sub hidden"><h3>DRINKS > WINES & CHAMPAGNE</h3><div id="wines-list"></div></div>
+<div id="beer" class="section sub hidden"><h3>DRINKS > BEER, SOFT DRINKS</h3><div id="beer-list"></div></div>
+<div id="cocktails" class="section sub hidden"><h3>DRINKS > COCKTAILS</h3><div id="cocktails-list"></div></div>
+<div id="mocktails" class="section sub hidden"><h3>DRINKS > MOCKTAILS</h3><div id="mocktails-list"></div></div>
+<div id="tots" class="section sub hidden"><h3>DRINKS > TOTS & SHOTS</h3><div id="tots-list"></div></div>
+</div>
+
+<div id="food" class="section hidden"><h3>FOOD</h3><p style="text-align:center;color:#ccc">Send food list to add here.<br>Please order with your waiter.</p></div>
+
+<div id="rooms" class="section hidden"><h3>ROOMS</h3>
+<p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:12px">Per Night • 24/7 Power • Free WiFi</p>
+<div class="card"><div><b>1. STANDARD</b><br><span style="font-size:12px;color:#aaa">Cozy • 1 Bed • AC • TV</span></div><div style="text-align:right"><div class="price">N70,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Standard%20Room%20-%20N70%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
+<div class="card"><div><b>2. DELUXE</b><br><span style="font-size:12px;color:#aaa">Spacious • AC • TV • Fridge</span></div><div style="text-align:right"><div class="price">N90,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Deluxe%20Room%20-%20N90%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
+<div class="card"><div><b>3. SUPER DELUXE</b><br><span style="font-size:12px;color:#aaa">King Bed • Smart TV • Extra Space</span></div><div style="text-align:right"><div class="price">N100,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Super%20Deluxe%20Room%20-%20N100%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
+<div class="card"><div><b>4. EXECUTIVE</b><br><span style="font-size:12px;color:#aaa">Luxury • Work Desk • Lounge</span></div><div style="text-align:right"><div class="price">N120,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Executive%20Room%20-%20N120%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
+<div class="card"><div><b>5. PRESIDENTIAL</b><br><span style="font-size:12px;color:#aaa">VIP • Living Room • Jacuzzi</span></div><div style="text-align:right"><div class="price">N150,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Presidential%20Suite%20-%20N150%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
+<div class="book-box"><h3>Book Your Room</h3><p>Luxury rooms & suites. Book via WhatsApp.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20a%20ROOM" target="_blank" rel="noopener">💬 WhatsApp • Book Room Now</a></div></div>
+
+<div id="events" class="section hidden"><h3>EVENTS CENTRE</h3><div class="book-box"><h3>Book Event Centre</h3><p>Weddings, conferences & special occasions.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20the%20EVENT%20CENTRE" target="_blank" rel="noopener">💬 WhatsApp • Book Event Now</a></div></div>
+
+<script>
+let loc='vip';
+const data={
+"liquor-list":[["GORDON GIN",16500,15000],["ORIGIN BITTERS BOTTLE",21500,20000],["SMIRNOFF (Vodka)",27000,null],["ABSOLUTE",32500,null],["RED LABEL 20CL",10000,null],["RED LABEL 70CL",33000,40000],["WILLIAM LAWSON",38000,30000],["BAILEY",38000,null],["BROWN AND BURK",40000,null],["SIERRA TEQUILA WHITE",40500,35000],["BACARDI",48500,40000],["BLACK LABEL",90000,80000],["JAMESON GREEN",70000,50000],["JAMESON BLACK",70000,75000],["MARTEL VS",97000,90000],["CIROC",100000,null],["JACK DANIEL 750ML",108000,null],["REMY MARTINS",119000,null],["HENNESSY VS",172000,100000],["CASAMIGO WHITE",248000,210000]],
+"wines-list":[["VALETA SMALL",16500,null],["VALETA BIG",30500,null],["FRONTERA",16500,null],["CHAMDOR (BOTTLE)",22000,null],["CARLO ROSSI",27000,20000],["FOUR COUSINS",32500,20000],["ANDRE BRUT",38000,null],["MOET AND CHANDON",215000,null]],
+"beer-list":[["MALTA GUINNESS",2000,1500],["HEINEKEN",3500,3000],["TROPHY",3500,2500],["BUDWEISER",3500,2500],["COKE PLASTIC",1500,1200],["EVA",1200,1000]],
+"cocktails-list":[["LONG ISLAND",12000,null],["PINACOLADA",12000,null],["MOJITO",10000,null],["BLUE LAGOON",8000,null],["SEX ON THE BEACH",12000,null]],
+"mocktails-list":[["CHAPMAN",6000,null],["VIRGIN MOJITO",8000,null],["VIRGIN COLADA",8000,null],["TROPICAL SUNRISE",20000,null]],
+"tots-list":[["SIERRA TEQUILA",4000,null],["GORDON'S GIN",4000,null],["SMIRNOFF VODKA",4000,null],["RAK OF SIX SHOTS",20000,null]]
+};
+function render(){for(let id in data){let h="";data[id].forEach(item=>{let price=loc==='vip'?item[1]:(item[2]||item[1]);let label=loc==='vip'?'VIP':'POOL SIDE';h+=`<div class="card"><div><b>${item[0]}</b></div><div style="text-align:right"><div class="price">N${price.toLocaleString()}<small>${label}</small></div><button class="view">View Menu</button></div></div>`});document.getElementById(id).innerHTML=h;}}
+render();
+function setLocation(l,btn){loc=l;document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();}
+// FIXED: Hide VIP/POOL toggle for Rooms & Events, show only for Drinks & Food
+function showMain(id,b){
+  document.querySelectorAll('.main-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  ['drinks','food','rooms','events'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  if(id==='drinks' || id==='food'){document.getElementById('location-toggle').classList.remove('hidden');}
+  else{document.getElementById('location-toggle').classList.add('hidden');}
+}
+function showSub(id,b){document.querySelectorAll('.sub-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.sub').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+</script>
+</body>
+</html>
