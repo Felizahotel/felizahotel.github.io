@@ -40,13 +40,13 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 <div class="phones"><a href="tel:08159651512">📞 0815 965 1512</a><a href="tel:08159651606">📞 0815 965 1606</a></div></div>
 <div class="hero"><h2>EXPERIENCE LUXURY DINING</h2><p>Select your location for correct price</p></div>
 
-<!-- VIP / POOL SIDE - ONLY FOR DRINKS & FOOD -->
+<!-- VIP / POOL SIDE - ONLY FOR DRINKS -->
 <div id="location-toggle">
 <div class="toggle">
 <button id="btn-vip" class="active" onclick="setLocation('vip',this)">VIP</button>
 <button id="btn-pool" onclick="setLocation('pool',this)">POOL SIDE</button>
 </div>
-<p class="toggle-note">Toggles apply to Drinks & Food only</p>
+<p class="toggle-note">Toggles apply to Drinks only</p>
 </div>
 
 <div class="main-menu">
@@ -73,7 +73,32 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 <div id="tots" class="section sub hidden"><h3>DRINKS > TOTS & SHOTS</h3><div id="tots-list"></div></div>
 </div>
 
-<div id="food" class="section hidden"><h3>FOOD</h3><p style="text-align:center;color:#ccc">Send food list to add here.<br>Please order with your waiter.</p></div>
+<!-- FOOD - NO VIP / POOL SIDE -->
+<div id="food" class="hidden">
+<div class="sub-menu">
+<button class="active" onclick="showFoodSub('bbq',this)">BBQ Fish</button>
+<button onclick="showFoodSub('starters',this)">Starters</button>
+<button onclick="showFoodSub('pepper-soup',this)">Pepper Soup</button>
+<button onclick="showFoodSub('african',this)">African Dishes</button>
+<button onclick="showFoodSub('proteins',this)">Proteins</button>
+<button onclick="showFoodSub('pasta',this)">Pasta & Noodles</button>
+<button onclick="showFoodSub('rice',this)">Rice</button>
+<button onclick="showFoodSub('sandwich',this)">Sandwich & Shawarma</button>
+<button onclick="showFoodSub('breakfast',this)">Breakfast</button>
+<button onclick="showFoodSub('pastries',this)">Pastries & Extras</button>
+</div>
+<div id="bbq" class="section food-sub"><h3>FOOD > BBQ FISH</h3><div id="bbq-list"></div></div>
+<div id="starters" class="section food-sub hidden"><h3>FOOD > STARTERS & FINGER FOOD</h3><div id="starters-list"></div></div>
+<div id="pepper-soup" class="section food-sub hidden"><h3>FOOD > PEPPER SOUP</h3><div id="pepper-soup-list"></div></div>
+<div id="african" class="section food-sub hidden"><h3>FOOD > AFRICAN DISHES</h3><div id="african-list"></div></div>
+<div id="proteins" class="section food-sub hidden"><h3>FOOD > CHOICE OF PROTEINS</h3><div id="proteins-list"></div></div>
+<div id="pasta" class="section food-sub hidden"><h3>FOOD > PASTA & NOODLES</h3><div id="pasta-list"></div></div>
+<div id="rice" class="section food-sub hidden"><h3>FOOD > RICE</h3><div id="rice-list"></div></div>
+<div id="sandwich" class="section food-sub hidden"><h3>FOOD > SANDWICH, CHICKEN & CHIPS, SHAWARMA</h3><div id="sandwich-list"></div></div>
+<div id="breakfast" class="section food-sub hidden"><h3>FOOD > BREAKFAST</h3><div id="breakfast-list"></div></div>
+<div id="pastries" class="section food-sub hidden"><h3>FOOD > PASTRIES & EXTRAS</h3><div id="pastries-list"></div></div>
+<p style="text-align:center;color:#aaa;font-size:12px;margin-top:6px">Please order with your waiter.</p>
+</div>
 
 <div id="rooms" class="section hidden"><h3>ROOMS</h3>
 <p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:12px">Per Night • 24/7 Power • Free WiFi</p>
@@ -96,18 +121,35 @@ const data={
 "mocktails-list":[["CHAPMAN",6000,null],["VIRGIN MOJITO",8000,null],["VIRGIN COLADA",8000,null],["TROPICAL SUNRISE",20000,null]],
 "tots-list":[["SIERRA TEQUILA",4000,null],["GORDON'S GIN",4000,null],["SMIRNOFF VODKA",4000,null],["RAK OF SIX SHOTS",20000,null]]
 };
-function render(){for(let id in data){let h="";data[id].forEach(item=>{let price=loc==='vip'?item[1]:(item[2]||item[1]);let label=loc==='vip'?'VIP':'POOL SIDE';h+=`<div class="card"><div><b>${item[0]}</b></div><div style="text-align:right"><div class="price">N${price.toLocaleString()}<small>${label}</small></div><button class="view">View Menu</button></div></div>`});document.getElementById(id).innerHTML=h;}}
+const foodData={
+"bbq-list":[["BBQ CATFISH",20000],["BBQ CROAKER FISH",20000]],
+"starters-list":[["CLASSIC HOT CHICKEN WINGS",12000],["PEPPERED GOAT MEAT",12000],["PEPPERED GIZZARD",12000],["PEPPERED CHICKEN",10000],["PEPPERED BEEF",10000],["ISI-EWU",15000],["NKWOBI",12000],["CHICKEN SPRING ROLL (3PCS)",5000],["VEGETABLE SPRING ROLL (3PCS)",4000],["PUFF-PUFF",200],["SAMOSA (3PCS)",3500],["PEPPERED SNAIL",20000]],
+"pepper-soup-list":[["CATFISH PEPPER SOUP",15500],["CROAKER PEPPER SOUP",12000],["GOAT MEAT PEPPER SOUP",15000],["CHICKEN PEPPER SOUP",12000]],
+"african-list":[["EGUSI SOUP",6000],["OGBONO SOUP",6000],["EFO RIRO",6000],["OKRA SOUP",6000],["EDIKANG IKONG",8000],["EBA / SEMO / AMALA",2000],["WHEAT / POUNDO YAM",2500]],
+"proteins-list":[["CROAKER FISH",15000],["TITUS FISH",7000],["GOAT MEAT / BEEF / ASSORTED / CHICKEN / TURKEY",12000],["EGG",1000]],
+"pasta-list":[["JOLLOF SPAGHETTI",6000],["FELIZA NOODLES",15000],["NOODLES & OMELETTE",7000]],
+"rice-list":[["STIR FRY RICE",6000],["JOLLOF RICE",6000],["FRIED RICE",6000],["OFADA RICE",10000]],
+"sandwich-list":[["SANDWICH WITH CHIPS",12000],["CHICKEN & CHIPS",15000],["SHAWARMA (REGULAR)",5000],["SHAWARMA (LARGE)",6000],["EXTRA CHICKEN / BEEF",12000]],
+"breakfast-list":[["ENGLISH BREAKFAST",15000],["BREAD & TEA / COFFEE",6000],["FRIED EGG, BREAD & TEA",7000],["SPANISH OMELETTE",5000],["AKARA & PAP / OGI",5000],["BREAD & OMELETTE",6000]],
+"pastries-list":[["CUPCAKES / MUFFINS",1000],["EGG ROLL / MEAT PIE / FISH ROLL / SAUSAGE ROLL",500],["POPCORN",500],["FOOD BAG / FISH BAG",1000]]
+};
+function render(){
+for(let id in data){let h="";data[id].forEach(item=>{let price=loc==='vip'?item[1]:(item[2]||item[1]);let label=loc==='vip'?'VIP':'POOL SIDE';h+=`<div class="card"><div><b>${item[0]}</b></div><div style="text-align:right"><div class="price">N${price.toLocaleString()}<small>${label}</small></div><button class="view">View Menu</button></div></div>`});document.getElementById(id).innerHTML=h;}
+// FOOD - NO VIP / POOL SIDE LABEL
+for(let id in foodData){let h="";foodData[id].forEach(item=>{h+=`<div class="card"><div><b>${item[0]}</b></div><div style="text-align:right"><div class="price">N${item[1].toLocaleString()}</div><button class="view">View Menu</button></div></div>`});document.getElementById(id).innerHTML=h;}
+}
 render();
 function setLocation(l,btn){loc=l;document.querySelectorAll('.toggle button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');render();}
-// FIXED: Hide VIP/POOL toggle for Rooms & Events, show only for Drinks & Food
+// FIXED: Toggle shows ONLY for DRINKS now
 function showMain(id,b){
   document.querySelectorAll('.main-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
   ['drinks','food','rooms','events'].forEach(s=>document.getElementById(s).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
-  if(id==='drinks' || id==='food'){document.getElementById('location-toggle').classList.remove('hidden');}
+  if(id==='drinks'){document.getElementById('location-toggle').classList.remove('hidden');}
   else{document.getElementById('location-toggle').classList.add('hidden');}
 }
-function showSub(id,b){document.querySelectorAll('.sub-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.sub').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+function showSub(id,b){document.querySelectorAll('#drinks .sub-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.sub').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+function showFoodSub(id,b){document.querySelectorAll('#food .sub-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.food-sub').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
 </script>
 </body>
 </html>
