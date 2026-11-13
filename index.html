@@ -72,42 +72,83 @@ const SHEET_ID="1Id7sEYyOgmpBWUyG8pV_Y0HvVT5Ruzk4bltjjN1ZjvQ";
 let loc='vip', cache={}, drinksLong=[], foodLong=[], roomsList=[], eventsList=[];
 function parseCSV(text){const lines=text.trim().split("\n");return lines.map(line=>{const out=[];let cur="";let inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===','&&!inQ){out.push(cur);cur="";}else cur+=c;}out.push(cur);return out.map(s=>s.trim().replace(/^"|"$/g,''));});}
 function toNum(s){if(!s)return null;const n=parseInt(String(s).replace(/[^0-9]/g,''));return isNaN(n)?null:n;}
-function isNumStr(s){if(!s)return false;return /^[\d,\s₦N]+$/.test(String(s).trim())&&toNum(s)!==null;}
 function cleanName(n){return String(n).replace(/^\d+\.\s*/,'').trim();}
+function findCol(headers, keywords){
+  for(let i=0;i<headers.length;i++){ const h=headers[i].toLowerCase(); for(const k of keywords){ if(h.includes(k)) return i; } }
+  return -1;
+}
+// DRINKS & FOOD: Find columns by HEADER NAME, never by position
 async function fetchSheet(sheetName){
   if(cache[sheetName])return cache[sheetName];
   const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&headers=1`;
   const res=await fetch(url);const text=await res.text();const rows=parseCSV(text);
+  if(rows.length<2) return [];
+  const headers=rows[0].map(h=>h.toLowerCase().trim());
+  const catIdx=findCol(headers,["categor"]);
+  const nameIdx=findCol(headers,["name","item","drink","food"]);
+  const descIdx=findCol(headers,["desc","detail","note"]);
+  const vipIdx=findCol(headers,["vip"]);
+  const poolIdx=findCol(headers,["pool"]);
+  const priceIdx=findCol(headers,["price"]);
+  const availIdx=findCol(headers,["avail","active","show"]);
+  // Fallback if headers missing: assume Cat=0, Name=1, Desc=2, VIP=3, Pool=4
+  const cIdx=catIdx>=0?catIdx:0;
+  const nIdx=nameIdx>=0?nameIdx:1;
+  const dIdx=descIdx>=0?descIdx:2;
+  const vIdx=vipIdx>=0?vipIdx:(priceIdx>=0?priceIdx:3);
+  const pIdx=poolIdx>=0?poolIdx:4;
   const items=[];
   rows.slice(1).forEach(r=>{
-    if(!r[1]||r[1].toLowerCase()==="name")return;
-    const avail=(r[5]||"").toLowerCase();if(avail==="no"||avail==="false"||avail==="0")return;
-    const c2=r[2]||"",c3=r[3]||"",c4=r[4]||"";
-    let cat=r[0]||"",name=cleanName(r[1]),desc="",vip=null,pool=null,price=null;
-    if(isNumStr(c2)&&!isNumStr(c3)){price=toNum(c2);vip=price;pool=price;desc=c3;}
-    else if(!isNumStr(c2)&&isNumStr(c3)){desc=c2;vip=toNum(c3);pool=toNum(c4);price=vip||pool;}
-    else if(!isNumStr(c2)&&!isNumStr(c3)&&isNumStr(c4)){desc=c3||c2;price=toNum(c4);vip=price;pool=price;}
-    else {desc=c2;vip=toNum(c3);pool=toNum(c4);price=vip||pool;}
-    items.push({cat,name,desc,vip,pool,price,rawCat:cat});
+    const nameRaw=r[nIdx]||"";
+    if(!nameRaw || nameRaw.toLowerCase()==="name") return;
+    if(availIdx>=0){ const av=(r[availIdx]||"").toLowerCase(); if(av==="no"||av==="false"||av==="0"||av==="hide") return; }
+    const cat=cIdx>=0?(r[cIdx]||""):"";
+    const desc=dIdx>=0?(r[dIdx]||""):"";
+    let vip=null, pool=null, price=null;
+    if(vIdx>=0) vip=toNum(r[vIdx]);
+    if(pIdx>=0 && pIdx!==vIdx) pool=toNum(r[pIdx]);
+    // If sheet has only ONE price column (Food), use it for both
+    if(vipIdx<0 && poolIdx<0 && priceIdx>=0){ price=toNum(r[priceIdx]); vip=price; pool=price; }
+    // If only VIP exists, Pool = VIP fallback, and vice versa
+    if(vip && !pool) pool=vip;
+    if(pool && !vip) vip=pool;
+    price=vip||pool;
+    items.push({cat,name:cleanName(nameRaw),desc,vip,pool,price,rawCat:cat});
   });
   cache[sheetName]=items;return items;
 }
-// ROOMS & EVENTS Sheet = Name | Price | Guests/Desc | Description
+// ROOMS & EVENTS: Name | Price | Guests/Desc | Description - also by header
 async function fetchRoomsEvents(sheetName, isEvent){
   if(cache[sheetName])return cache[sheetName];
   const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&headers=1`;
   const res=await fetch(url);const text=await res.text();const rows=parseCSV(text);
+  if(rows.length<2) return [];
+  const headers=rows[0].map(h=>h.toLowerCase().trim());
+  const nameIdx=findCol(headers,["name","hall","room"]);
+  const priceIdx=findCol(headers,["price","rental","rate","cost"]);
+  const guestIdx=findCol(headers,["guest","capac","person","pax"]);
+  const descIdx=findCol(headers,["desc","detail","note","includ"]);
+  const nIdx=nameIdx>=0?nameIdx:0;
+  const prIdx=priceIdx>=0?priceIdx:1;
+  const gIdx=guestIdx>=0?guestIdx:2;
+  const dIdx=descIdx>=0?descIdx:3;
   const items=[];
   rows.slice(1).forEach(r=>{
-    if(!r[0])return;
-    if(r[0].toLowerCase()==="name"||r[0].toLowerCase()==="category")return;
-    const name=cleanName(r[0]);
-    const price=toNum(r[1]);
+    const nameRaw=r[nIdx]||"";
+    if(!nameRaw || nameRaw.toLowerCase()==="name") return;
+    const price=toNum(r[prIdx]);
     if(!price) return;
     let guests="", desc="";
-    if(isEvent){ guests=r[2]||""; desc=r[3]||""; if(guests && guests.length>10 && !/^\d+$/.test(guests.trim())){ desc=guests; guests=""; } }
-    else { desc=r[2]||""; if(r[3] && r[3].length>desc.length) desc=r[3]; }
-    items.push({cat:"",name,desc,price,vip:price,pool:price,rawCat:guests,guests});
+    if(isEvent){
+      guests=gIdx>=0?(r[gIdx]||""):"";
+      desc=dIdx>=0?(r[dIdx]||""):"";
+      if(guests && guests.length>10 && !/^\d+$/.test(guests.trim())){ desc=guests; guests=""; }
+    } else {
+      desc=dIdx>=0?(r[dIdx]||""):"";
+      // Rooms: if desc column is actually empty, try guests col as desc
+      if(!desc && gIdx>=0) desc=r[gIdx]||"";
+    }
+    items.push({cat:"",name:cleanName(nameRaw),desc,price,vip:price,pool:price,rawCat:guests,guests});
   });
   cache[sheetName]=items;return items;
 }
@@ -120,7 +161,20 @@ async function loadAll(){
     if(!document.getElementById("drinks-list-view").classList.contains("hidden"))renderDrinks();
   }catch(err){}
 }
-function renderDrinks(){let dh="";drinksLong.forEach(it=>{if(it.type==="heading"){dh+=`<div class="food-heading">${it.text}</div>`;}else{let p=loc==='vip'?(it.vip||it.pool):(it.pool||it.vip);let lbl=loc==='vip'?'VIP':'POOL SIDE';let priceHtml=p?`N${p.toLocaleString()}<small>${lbl}</small>`:`ASK WAITER<small>${lbl}</small>`;dh+=`<div class="card"><div><b>${it.name}</b></div><div style="text-align:right"><div class="price">${priceHtml}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("drinks-long-list").innerHTML=dh||"<p style='text-align:center;color:#aaa'>Loading...</p>";document.getElementById("current-loc-label").textContent=loc==='vip'?"VIP DRINKS":"POOL SIDE DRINKS";}
+function renderDrinks(){
+  let dh="";drinksLong.forEach(it=>{
+    if(it.type==="heading"){dh+=`<div class="food-heading">${it.text}</div>`;}
+    else{
+      // STRICT: VIP shows ONLY vip column, POOL shows ONLY pool column. No mixing.
+      let p = (loc==='vip') ? it.vip : it.pool;
+      let lbl = loc==='vip' ? 'VIP' : 'POOL SIDE';
+      let priceHtml = p ? `N${p.toLocaleString()}<small>${lbl}</small>` : `ASK WAITER<small>${lbl}</small>`;
+      dh+=`<div class="card"><div><b>${it.name}</b></div><div style="text-align:right"><div class="price">${priceHtml}</div><button class="view">View Menu</button></div></div>`;
+    }
+  });
+  document.getElementById("drinks-long-list").innerHTML=dh||"<p style='text-align:center;color:#aaa'>Loading...</p>";
+  document.getElementById("current-loc-label").textContent=loc==='vip'?"VIP DRINKS":"POOL SIDE DRINKS";
+}
 function renderFood(){let fh="";foodLong.forEach(it=>{if(it.type==="heading"){fh+=`<div class="food-heading">${it.text}</div>`;}else{let p=it.vip||it.pool||it.price;let d=it.desc?`<span class="desc">${it.desc}</span>`:"";fh+=`<div class="card"><div><b>${it.name}</b>${d}</div><div style="text-align:right"><div class="price">N${p?p.toLocaleString():"—"}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("food-long-list").innerHTML=fh||"<p style='text-align:center;color:#aaa'>Loading...</p>";}
 function renderRooms(){
   let h="";roomsList.forEach((it,i)=>{let p=it.price;let num=i+1;h+=`<div class="card"><div><b>${num}. ${it.name.toUpperCase()}</b><br><span style="font-size:12px;color:#aaa">${it.desc||""}</span></div><div style="text-align:right"><div class="price">N${p?p.toLocaleString():"—"}<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=${encodeURIComponent("Hello Feliza, I want to book "+it.name+" - N"+(p||""))}" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>`;});
