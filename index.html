@@ -21,7 +21,6 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 .main-menu button{padding:11px 18px;border-radius:25px;border:1px solid #FFC700;background:transparent;color:#FFC700;font-weight:bold;cursor:pointer}
 .main-menu button.active{background:#FFC700;color:#000}
 .section{padding:10px 14px}
-.section h3{color:#FFC700;text-align:center;margin:12px 0}
 .card{background:#222;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .card b{font-size:15px}
 .desc{font-size:12px;color:#aaa;line-height:1.4;display:block;margin-top:3px}
@@ -35,7 +34,6 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 .event-card h4{color:#FFC700;font-size:16px}
 .event-card p{font-size:12px;color:#aaa;line-height:1.5;margin-top:4px}
 .food-heading{color:#FFC700;font-size:18px;font-weight:bold;margin:22px 0 10px;padding-bottom:6px;border-bottom:1px solid #FFC700;letter-spacing:.5px}
-.food-subheading{color:#ccc;font-size:12px;margin:-6px 0 10px}
 .hidden{display:none}
 .loc-big{display:flex;flex-direction:column;gap:14px;margin:16px 0}
 .loc-big button{padding:22px;border-radius:14px;border:2px solid #FFC700;background:#222;color:#FFC700;font-size:20px;font-weight:bold;cursor:pointer;letter-spacing:1px}
@@ -50,7 +48,6 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 <div class="header"><h1>FELIZA</h1><p>Hotel & Suites & Event Centre • Obada</p>
 <div class="phones"><a href="tel:08159651512">📞 0815 965 1512</a><a href="tel:08159651606">📞 0815 965 1606</a></div></div>
 <div class="hero"><h2>EXPERIENCE LUXURY DINING</h2><p>Select your location for correct price</p></div>
-
 <div class="main-menu">
 <button class="active" onclick="showMain('drinks',this)">DRINKS</button>
 <button onclick="showMain('food',this)">FOOD</button>
@@ -60,288 +57,83 @@ body{background:#1A1A1A;color:#fff;padding-bottom:20px}
 
 <div id="drinks" class="section">
 <div class="cat-banner"><img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=800"><h3>DRINKS MENU</h3></div>
-<div id="drinks-chooser">
-<p style="text-align:center;color:#ccc;font-size:14px;margin:10px 0">Where are you sitting? Choose your location to see correct prices:</p>
-<div class="loc-big">
-<button onclick="chooseDrinkLoc('vip')">🍷 VIP<small>Tap to view VIP Drinks Prices</small></button>
-<button onclick="chooseDrinkLoc('pool')">🏊 POOL SIDE<small>Tap to view Pool Side Drinks Prices</small></button>
-</div>
-</div>
-<div id="drinks-list-view" class="hidden">
-<button class="back-btn" onclick="backToDrinkChooser()">← Back to VIP / POOL SIDE</button>
-<div id="current-loc-label" class="current-loc">VIP DRINKS</div>
-<div id="drinks-long-list"></div>
-<p style="text-align:center;color:#aaa;font-size:12px;margin-top:10px">Please order at the bar / with your waiter.</p>
-</div>
+<div id="drinks-chooser"><p style="text-align:center;color:#ccc;font-size:14px;margin:10px 0">Where are you sitting? Choose your location to see correct prices:</p><div class="loc-big"><button onclick="chooseDrinkLoc('vip')">🍷 VIP<small>Tap to view VIP Drinks Prices</small></button><button onclick="chooseDrinkLoc('pool')">🏊 POOL SIDE<small>Tap to view Pool Side Drinks Prices</small></button></div></div>
+<div id="drinks-list-view" class="hidden"><button class="back-btn" onclick="backToDrinkChooser()">← Back to VIP / POOL SIDE</button><div id="current-loc-label" class="current-loc">VIP DRINKS</div><div id="drinks-long-list"><p style="text-align:center;color:#aaa">Loading from Google Sheet...</p></div><p style="text-align:center;color:#aaa;font-size:12px;margin-top:10px">Please order at the bar / with your waiter.</p></div>
 </div>
 
-<div id="food" class="section hidden">
-<div class="cat-banner"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"><h3>FOOD MENU</h3></div>
-<p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:6px">Scroll down for full menu • Please order with your waiter</p>
-<div id="food-long-list"></div>
-</div>
+<div id="food" class="section hidden"><div class="cat-banner"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"><h3>FOOD MENU</h3></div><p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:6px">Scroll down for full menu • Please order with your waiter</p><div id="food-long-list"><p style="text-align:center;color:#aaa">Loading...</p></div></div>
 
-<div id="rooms" class="section hidden"><div class="cat-banner"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800"><h3>ROOMS</h3></div>
-<p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:12px">Per Night • 24/7 Power • Free WiFi</p>
-<div class="card"><div><b>1. STANDARD</b><br><span style="font-size:12px;color:#aaa">Cozy • 1 Bed • AC • TV</span></div><div style="text-align:right"><div class="price">N70,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Standard%20Room%20-%20N70%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
-<div class="card"><div><b>2. DELUXE</b><br><span style="font-size:12px;color:#aaa">Spacious • AC • TV • Fridge</span></div><div style="text-align:right"><div class="price">N90,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Deluxe%20Room%20-%20N90%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
-<div class="card"><div><b>3. SUPER DELUXE</b><br><span style="font-size:12px;color:#aaa">King Bed • Smart TV • Extra Space</span></div><div style="text-align:right"><div class="price">N100,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Super%20Deluxe%20Room%20-%20N100%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
-<div class="card"><div><b>4. EXECUTIVE</b><br><span style="font-size:12px;color:#aaa">Luxury • Work Desk • Lounge</span></div><div style="text-align:right"><div class="price">N120,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Executive%20Room%20-%20N120%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
-<div class="card"><div><b>5. PRESIDENTIAL</b><br><span style="font-size:12px;color:#aaa">VIP • Living Room • Jacuzzi</span></div><div style="text-align:right"><div class="price">N150,000<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20Presidential%20Suite%20-%20N150%2C000" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>
-<div class="book-box"><h3>Book Your Room</h3><p>Luxury rooms & suites. Book via WhatsApp.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20a%20ROOM" target="_blank" rel="noopener">💬 WhatsApp • Book Room Now</a></div></div>
+<div id="rooms" class="section hidden"><div class="cat-banner"><img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800"><h3>ROOMS</h3></div><p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:12px">Per Night • 24/7 Power • Free WiFi</p><div id="rooms-long-list"><p style="text-align:center;color:#aaa">Loading...</p></div><div class="book-box"><h3>Book Your Room</h3><p>Luxury rooms & suites. Book via WhatsApp.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20a%20ROOM" target="_blank" rel="noopener">💬 WhatsApp • Book Room Now</a></div></div>
 
-<div id="events" class="section hidden">
-<div class="cat-banner"><img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800"><h3>EVENTS CENTRE</h3></div>
-<p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:14px">Capacity & Rental Prices • Weddings, Conferences & Special Occasions</p>
-<div class="event-card"><h4>1. MINI HALL</h4><span class="badge">👥 200 GUESTS</span><p>Standard Hall • Perfect for intimate weddings, birthdays, meetings & small celebrations</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><div class="price" style="font-size:18px">₦500,000<small>RENTAL</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20MINI%20HALL%20-%20200%20Guests%20-%20N500%2C000" target="_blank" rel="noopener"><button class="view" style="padding:8px 16px">Book Now</button></a></div></div>
-<div class="event-card"><h4>2. NOBLE ROOM</h4><span class="badge">👥 500 GUESTS</span><p>Premium Hall Upstairs • Elegant space for weddings, conferences & premium events</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><div class="price" style="font-size:18px">₦1,500,000<small>RENTAL</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20NOBLE%20ROOM%20-%20500%20Guests%20-%20N1%2C500%2C000" target="_blank" rel="noopener"><button class="view" style="padding:8px 16px">Book Now</button></a></div></div>
-<div class="event-card"><h4>3. MAIN HALL</h4><span class="badge">👥 1,000 GUESTS</span><p>Premium Hall Downstairs • Spacious hall for large weddings, concerts & corporate events</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><div class="price" style="font-size:18px">₦2,000,000<small>RENTAL</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20MAIN%20HALL%20-%201000%20Guests%20-%20N2%2C000%2C000" target="_blank" rel="noopener"><button class="view" style="padding:8px 16px">Book Now</button></a></div></div>
-<div class="event-card" style="border:2px solid #FFC700;background:#2a2a00"><h4>4. GRAND HALL ⭐ BEST VALUE</h4><span class="badge">👥 1,500 GUESTS</span><p>Grand Premium Package • Upstairs + Downstairs Combined • For grand weddings & mega events</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><div class="price" style="font-size:18px">₦3,100,000<small>RENTAL</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20GRAND%20HALL%20-%201500%20Guests%20-%20N3%2C100%2C000" target="_blank" rel="noopener"><button class="view" style="padding:8px 16px">Book Now</button></a></div></div>
-<div class="book-box"><h3>Book Event Centre</h3><p>Weddings, conferences & special occasions.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20the%20EVENT%20CENTRE" target="_blank" rel="noopener">💬 WhatsApp • Book Event Now</a></div></div>
+<div id="events" class="section hidden"><div class="cat-banner"><img src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800"><h3>EVENTS CENTRE</h3></div><p style="text-align:center;color:#ccc;font-size:13px;margin-bottom:14px">Capacity & Rental Prices • Weddings, Conferences & Special Occasions</p><div id="events-long-list"><p style="text-align:center;color:#aaa">Loading...</p></div><div class="book-box"><h3>Book Event Centre</h3><p>Weddings, conferences & special occasions.</p><a href="https://api.whatsapp.com/send?phone=2348159651512&text=Hello%20Feliza%2C%20I%20want%20to%20book%20the%20EVENT%20CENTRE" target="_blank" rel="noopener">💬 WhatsApp • Book Event Now</a></div></div>
 
 <script>
-let loc='vip';
-// DRINKS - REPLACED COMPLETELY WITH NEW EXCEL (DRINKS_AND_LIQUOR_PRICES-1-1.xlsx). No old drinks kept.
-// vip = VIP column, pool = POOL column, null = use other side. If both null = ASK WAITER
-const drinksLong=[
-{type:"heading",text:"LIQUOR"},
-{type:"item",name:"GORDON GIN",vip:16500,pool:15000},
-{type:"item",name:"ORIGIN BITTERS BOTTLE",vip:20000,pool:16000},
-{type:"item",name:"SMIRNOFF (Vodka)",vip:27000,pool:null},
-{type:"item",name:"ABSOLUTE",vip:32500,pool:null},
-{type:"item",name:"RED LABEL 70CL",vip:40000,pool:33000},
-{type:"item",name:"WILLIAM LAWSON",vip:38000,pool:30000},
-{type:"item",name:"BAILEY",vip:38000,pool:null},
-{type:"item",name:"BROWN AND BURK",vip:40000,pool:null},
-{type:"item",name:"SIERRA TEQUILA WHITE",vip:40500,pool:35000},
-{type:"item",name:"JAGAMEISTER",vip:50000,pool:null},
-{type:"item",name:"BACARDI",vip:48500,pool:40000},
-{type:"item",name:"OLMECA TEQUILA",vip:48500,pool:null},
-{type:"item",name:"BLACK LABEL",vip:59500,pool:55000},
-{type:"item",name:"JAMESON GREEN",vip:65000,pool:60000},
-{type:"item",name:"JAMESON BLACK",vip:70000,pool:65000},
-{type:"item",name:"MARTEL VS",vip:97000,pool:90000},
-{type:"item",name:"CIROC",vip:100000,pool:null},
-{type:"item",name:"JACK DANIEL 750ML",vip:108000,pool:null},
-{type:"item",name:"REMY MARTINS",vip:119000,pool:null},
-{type:"item",name:"BOMBAY SAPPHIRE",vip:140000,pool:null},
-{type:"item",name:"HENNESSY VS",vip:120000,pool:100000},
-{type:"item",name:"MARTEL BLUE SWIFT",vip:165000,pool:null},
-{type:"item",name:"CASAMIGO WHITE",vip:248000,pool:210000},
-{type:"item",name:"AMERICAN HONEY",vip:50000,pool:45000},
-{type:"item",name:"ASCONI AGON",vip:25000,pool:22000},
-{type:"item",name:"BEST WHISKEY",vip:25000,pool:23000},
-{type:"item",name:"OMEGA",vip:35000,pool:30000},
-{type:"item",name:"LACOCO",vip:2500,pool:2000},
-{type:"item",name:"CAPTAIN JACK - 70CL",vip:20000,pool:18000},
-{type:"item",name:"JACK WILLIAMS - 75CL",vip:15000,pool:12000},
-{type:"item",name:"AGOR",vip:25000,pool:22000},
-{type:"heading",text:"WINES & CHAMPAGNE"},
-{type:"item",name:"FRONTERA",vip:16500,pool:null},
-{type:"item",name:"CHAMDOR (BOTTLE)",vip:22000,pool:null},
-{type:"item",name:"WHISPERING ANGEL",vip:23000,pool:null},
-{type:"item",name:"CARLO ROSSI",vip:27000,pool:20000},
-{type:"item",name:"FOUR COUSINS",vip:32500,pool:20000},
-{type:"item",name:"4TH STREET",vip:32500,pool:null},
-{type:"item",name:"THOMAS BARTON (BOTTLE)",vip:75500,pool:null},
-{type:"item",name:"BOTTEGA GOLD SMALL",vip:21500,pool:null},
-{type:"item",name:"ANDRE BRUT",vip:38000,pool:null},
-{type:"item",name:"TALKING PARROT",vip:48000,pool:null},
-{type:"item",name:"VEUVE DE VERNEY ICE ROSE",vip:161000,pool:null},
-{type:"item",name:"MOET AND CHANDON",vip:215000,pool:null},
-{type:"item",name:"DOM PERIGON",vip:763500,pool:null},
-{type:"item",name:"ACE OF SPADES",vip:860000,pool:null},
-{type:"item",name:"CRISTAL CHAMPAGNE",vip:914000,pool:null},
-{type:"item",name:"GLENFIDDICH 18YRS",vip:376000,pool:null},
-{type:"item",name:"DON JULIO",vip:699000,pool:null},
-{type:"item",name:"AZUL TEQUILA",vip:752500,pool:null},
-{type:"heading",text:"BEER & SOFT DRINKS"},
-{type:"item",name:"MALTA GUINNESS",vip:2000,pool:1500},
-{type:"item",name:"ORIJIN PET",vip:3000,pool:2500},
-{type:"item",name:"SMIRNOFF ICE",vip:2500,pool:2000},
-{type:"item",name:"STAR RADLER",vip:3000,pool:2500},
-{type:"item",name:"TROPHY",vip:3500,pool:2500},
-{type:"item",name:"HEINEKEN",vip:3500,pool:3000},
-{type:"item",name:"BUDWEISER",vip:3500,pool:2500},
-{type:"item",name:"ORIGIN BEER",vip:3500,pool:2500},
-{type:"item",name:"BIG ICE",vip:3500,pool:3500},
-{type:"item",name:"GOLDBERG",vip:3500,pool:2500},
-{type:"item",name:"DESPERADO",vip:3500,pool:2600},
-{type:"item",name:"BLACK BULLET",vip:4500,pool:3500},
-{type:"item",name:"M/STOUT",vip:4000,pool:2500},
-{type:"item",name:"HOLLANDIA",vip:6000,pool:4500},
-{type:"item",name:"CHIVITA ACTIVE",vip:6000,pool:4500},
-{type:"item",name:"COKE PLASTIC",vip:1500,pool:1200},
-{type:"item",name:"FANTA PLASTIC",vip:1500,pool:1200},
-{type:"item",name:"SPRITE PLASTIC",vip:1500,pool:1200},
-{type:"item",name:"EVA",vip:1200,pool:1000},
-{type:"item",name:"FLYING FISH",vip:2000,pool:1500},
-{type:"item",name:"STAR LITE - 60CL",vip:2500,pool:2000},
-{type:"item",name:"STAR LITE - 45CL",vip:2000,pool:1500},
-{type:"heading",text:"COCKTAILS"},
-{type:"item",name:"LONG ISLAND",vip:12000,pool:null},
-{type:"item",name:"PINACOLADA",vip:12000,pool:null},
-{type:"item",name:"PALMYCOLADA",vip:10000,pool:null},
-{type:"item",name:"MAGARITA",vip:10000,pool:null},
-{type:"item",name:"STRAWBERRY DAIQUIRI",vip:8000,pool:null},
-{type:"item",name:"WHITE RUSSIAN",vip:8000,pool:null},
-{type:"item",name:"BLACK RUSSIAN",vip:8000,pool:null},
-{type:"item",name:"BERRY DAMSEL",vip:8000,pool:null},
-{type:"item",name:"TEQUILA SUNRISE",vip:8000,pool:null},
-{type:"item",name:"ESPRESSO MARTINI",vip:10000,pool:null},
-{type:"item",name:"MOJITO",vip:10000,pool:null},
-{type:"item",name:"BLUE LAGOON",vip:8000,pool:null},
-{type:"item",name:"SEX ON THE BEACH",vip:12000,pool:null},
-{type:"item",name:"WHISKEY SOUR",vip:10000,pool:null},
-{type:"item",name:"COSMOPOLITAN",vip:8000,pool:null},
-{type:"item",name:"FISHBOWL COCKTAIL",vip:null,pool:null},
-{type:"item",name:"TIPSY PARADISE PLUS",vip:25000,pool:null},
-{type:"item",name:"DRUNKEN SAILOR",vip:25000,pool:null},
-{type:"heading",text:"SIGNATURE COCKTAILS"},
-{type:"item",name:"FELIZA MULTIPLE ORGASM",vip:15000,pool:null},
-{type:"item",name:"FELIZA EYES VOLUME",vip:15000,pool:null},
-{type:"heading",text:"MOCKTAILS"},
-{type:"item",name:"FELIZA ROOT RUSH (Hot Ginger Drink)",vip:10000,pool:null},
-{type:"item",name:"FELIZA ROOT RUSH (Cold Ginger Drink)",vip:10000,pool:null},
-{type:"item",name:"CHAPMAN",vip:6000,pool:null},
-{type:"item",name:"CRIMSON KUNO (Tropical+Ninja)",vip:6000,pool:null},
-{type:"item",name:"RUBY NOIR",vip:6000,pool:null},
-{type:"item",name:"VIRGIN MOJITO",vip:8000,pool:null},
-{type:"item",name:"VIRGIN COLADA",vip:8000,pool:null},
-{type:"item",name:"FISHBOWL MOCKTAIL",vip:null,pool:null},
-{type:"item",name:"TROPICAL SUNRISE",vip:20000,pool:null},
-{type:"item",name:"CITRUS FANTASY",vip:20000,pool:null},
-{type:"heading",text:"SMOOTHIES"},
-{type:"item",name:"VELVET SPELL",vip:8000,pool:null},
-{type:"item",name:"FOREST SILK",vip:10000,pool:null},
-{type:"item",name:"ELYSIAN DEW",vip:10000,pool:null},
-{type:"item",name:"LUCENT",vip:8000,pool:null},
-{type:"heading",text:"MILKSHAKES"},
-{type:"item",name:"VANILLA MILKSHAKE",vip:8000,pool:null},
-{type:"item",name:"CHOCOLATE MILKSHAKE",vip:8000,pool:null},
-{type:"item",name:"STRAWBERRY MILKSHAKE",vip:8000,pool:null},
-{type:"item",name:"FELIZA'S SPECIAL MILKSHAKE",vip:10000,pool:null},
-{type:"heading",text:"TOTS & SHOTS"},
-{type:"item",name:"SIERRA TEQUILA",vip:4000,pool:null},
-{type:"item",name:"GORDON'S GIN",vip:4000,pool:null},
-{type:"item",name:"IMPERIAL BLUE WHISKEY",vip:4000,pool:null},
-{type:"item",name:"SMIRNOFF VODKA",vip:4000,pool:null},
-{type:"item",name:"RACK OF SIX SHOTS",vip:20000,pool:null},
-{type:"heading",text:"BARTENDER'S FAVORITE"},
-{type:"item",name:"YOUR'S SINCERELY",vip:10000,pool:null},
-{type:"item",name:"CUMBER GIN",vip:10000,pool:null}
-];
-const foodLong=[
-{type:"heading",text:"BBQ FISH (FELIZA SIGNATURE)"},
-{type:"item",name:"BBQ CATFISH",price:20000,desc:"Feliza Signature Catfish, Marinated In A Blend Of Herbs And Spices, Grilled To Perfection"},
-{type:"item",name:"BBQ CROAKER FISH",price:20000,desc:"Indulge In Our Crispy Marinated Croaker Fish, Smothered In Our Signature BBQ Sauce And Spice"},
-{type:"heading",text:"STARTERS AND FINGERS FOOD",sub:"Appetizer Favorites & Bite-Sized Delight"},
-{type:"item",name:"CLASSIC HOT CHICKEN WINGS",price:12000,desc:"Smoky BBQ Sauce Infused With A Spicy Kick Served With Ranch Dressing"},
-{type:"item",name:"PEPPERED GOAT MEAT",price:12000,desc:"Savor The Flavor, Spicy Cooked Goat Meat Delight To Perfection In A Rich, Aromatic Pepper Sauce. A Nigeria Favorite."},
-{type:"item",name:"PEPPERED GIZZARD",price:12000,desc:"Tender Gizzard Strips Cooked In A Rich, Aromatic Pepper Sauce"},
-{type:"item",name:"PEPPERED CHICKEN",price:10000,desc:"Tender Chicken Strips Cooked In A Rich, Aromatic Pepper Sauce"},
-{type:"item",name:"PEPPERED BEEF",price:10000,desc:"Tender Beef Strips Cooked In A Rich, Aromatic Pepper Sauce"},
-{type:"item",name:"ISI-EWU",price:15000,desc:"Traditional Homemade Cooked Goat Head In A Rich, Aromatic Spicy Delight And Sauce."},
-{type:"item",name:"NKWOBI",price:12000,desc:"Spicy Homemade Tender Pieces Of Cow Leg Cooked In A Rich, Aromatic Sauce"},
-{type:"item",name:"CHICKEN SPRING ROLL (3PCS)",price:5000,desc:""},
-{type:"item",name:"VEGETABLE SPRING ROLL (3PCS)",price:4000,desc:""},
-{type:"item",name:"PEPPERED SNAIL",price:20000,desc:"Herb-infused Peppered Snail, Cooked With Fresh Veggies & Herbs Like Thyme And Rosemary"},
-{type:"heading",text:"PEPPER SOUPS"},
-{type:"item",name:"CATFISH PEPPER SOUP",price:15500,desc:"Delightful Twist, Fresh Whole Catfish Cooked In A Spicy, Aromatic Broth Infused With Peppers, Spices And Herbs. A Refreshing Seafood Option And Satisfying Classic Pepper Soup"},
-{type:"item",name:"CROAKER FISH PEPPER SOUP",price:12000,desc:"Delightful Twist, Fresh Whole Croaker Fish Cooked In A Spicy, Aromatic Broth Infused With Peppers, Spices And Herbs. Served With Bread Roll"},
-{type:"item",name:"GOAT MEAT PEPPER SOUP",price:15000,desc:"Spicy And Savory, Tender Goat Meat Pepper Soup, Infused With Aromatic Peppers, Spices And Herbs Served With Bread Roll, Perfect For Warming The Soul."},
-{type:"item",name:"CHICKEN PEPPER SOUP",price:12000,desc:"Tender Chicken Cooked In A Flavorful, Spicy Broth Infused With Peppers And Herbs. Served With Bread Roll. A Soothing Delight."},
-{type:"heading",text:"AFRICAN DISHES (NATIONAL SOUP)",sub:"Diversity And Richness Of Nigerian Cuisine (Select Protein Of Choice)"},
-{type:"item",name:"EGUSI",price:6000,desc:"Central Flavor Igbo Origin Prepared With Seeds Of Certain Cucurbitaceae Plant Seeds, Well Stocked With Ponmo, Panla Fish, Smoked Catfish & Stock-fish"},
-{type:"item",name:"OGBONO",price:6000,desc:"Edo Delicacy Made With Ground Dry Irvingia Seeds (Wild Mango), Palm Oil, Bitter Leaf, Celosia, Fermented Locust Beans, Smoked Fish, Smoked Hake Fish, Ponmo And Crayfish"},
-{type:"item",name:"EDIKANG IKONG",price:8000,desc:"Originated Among The Efik-Ibibio People Of Akwa Ibom & Cross River State, Very Nutritious And Well Stocked With Ponmo, Panla, Smoked Catfish And Stock-fish"},
-{type:"item",name:"EFO RIRO",price:6000,desc:"Yoruba Cuisine Known As Eko Special, With Vegetables, Stock-fish, Ponmo, Smoked Catfish And Panla Fish"},
-{type:"item",name:"OKRA SOUP",price:6000,desc:"Very Common And Highly Nutritious Soup Known As Ofe Okwuru (Igbo), Obe Ila (Yoruba), Miyan Kubewa (Hausa)"},
-{type:"heading",text:"CHOICE OF SWALLOW"},
-{type:"item",name:"EBA",price:2000,desc:""},
-{type:"item",name:"SEMO",price:2500,desc:""},
-{type:"item",name:"AMALA",price:2000,desc:""},
-{type:"item",name:"WHEAT",price:2500,desc:""},
-{type:"item",name:"POUNDO YAM",price:2500,desc:""},
-{type:"heading",text:"CHOICE OF PROTEINS",sub:"Choose Your Protein And Pair It With Our Delight Side And Soups"},
-{type:"item",name:"CROAKER FISH",price:15000,desc:""},
-{type:"item",name:"TITUS FISH",price:7000,desc:""},
-{type:"item",name:"GOAT MEAT",price:12000,desc:""},
-{type:"item",name:"BEEF",price:8000,desc:""},
-{type:"item",name:"ASSORTED",price:8000,desc:""},
-{type:"item",name:"CHICKEN",price:8000,desc:""},
-{type:"item",name:"TURKEY",price:9000,desc:""},
-{type:"item",name:"EGG / FRIED OR BOILED",price:1000,desc:""},
-{type:"heading",text:"PASTA & NOODLES"},
-{type:"item",name:"JOLLOF SPAGHETTI",price:6000,desc:"Nigeria Beloved Jollof Spaghetti, Tossed In A Bold, Smoky Tomato Sauce Crafted From Bell Peppers, Scotch Bonnet Chilli, Onions And Garlic."},
-{type:"item",name:"FELIZA NOODLES WITH CHOICE OF PROTEIN",price:10000,desc:"Stir-fried Noodles With Veggies, Indulge In Our Delicious Noodles Paired With Your Preferred Protein"},
-{type:"item",name:"NOODLES & OMELETTE",price:7000,desc:""},
-{type:"heading",text:"CLASS OF RICE"},
-{type:"item",name:"STIR FRY RICE",price:6000,desc:"Stir-fry Rice With Flash-tossed Peas, Shredded Carrots, Mushrooms And Tender Steak. Coated In A Glossy Glaze Of Soy Sauce"},
-{type:"item",name:"OFADA RICE & MEAT/FISH SAUCE",price:10000,desc:"Cherished Locally Grown Rice With A Luxurious Palm-oil Infused Hot Chilli Stew Brimming With Tender Assorted Meat, Diced Ponmo, Panla, Smoked Fish And Boiled Egg"},
-{type:"item",name:"JOLLOF RICE",price:6000,desc:"Nigeria Beloved Jollof Rice, Tossed In A Bold, Smoky Tomato Sauce Crafted From Bell Peppers, Scotch Bonnet Chili, Onions And Garlic."},
-{type:"item",name:"FRIED RICE",price:6000,desc:"Stir-fry Rice With Flash-tossed Peas, Shredded Carrots, Spring Onions And Green Beans"},
-{type:"heading",text:"SANDWICHES & CHIPS"},
-{type:"item",name:"SANDWICH SERVED WITH CHIPS",price:10000,desc:"Club Sandwich With Chips"},
-{type:"item",name:"CHICKEN CLUB SANDWICH WITH CHIPS",price:12000,desc:""},
-{type:"heading",text:"CHICKEN & CHIPS"},
-{type:"item",name:"CHICKEN & CHIPS",price:15000,desc:"Crispy Fried Chicken Served With Golden Chips (Fries) And Your Choice Of Sauce (Ketchup Or Hot/Tomato Sauce) A Classic Combo That's Finger-lickin"},
-{type:"heading",text:"SHAWARMA"},
-{type:"item",name:"CHICKEN SHAWARMA WITH SINGLE SAUSAGE",price:5000,desc:""},
-{type:"item",name:"CHICKEN SHAWARMA WITH DOUBLE SAUSAGE",price:6000,desc:""},
-{type:"item",name:"BEEF SHAWARMA WITH SINGLE SAUSAGE",price:5000,desc:""},
-{type:"item",name:"BEEF SHAWARMA WITH DOUBLE SAUSAGE",price:6000,desc:"Tender Beef Strips, Marinated In Aromatic Spices, Grilled To Perfection And Wrapped In Warm Pita Bread With Fresh Veggies, Double Sausage And Creamy Sauce, A Flavorful And Satisfying Classic Food."},
-{type:"item",name:"EXTRA CHICKEN",price:8000,desc:""},
-{type:"item",name:"EXTRA BEEF",price:8000,desc:""},
-{type:"item",name:"EXTRA TURKEY",price:9000,desc:""},
-{type:"heading",text:"SIDES"},
-{type:"item",name:"SWEET POTATO FRIES",price:3000,desc:""},
-{type:"item",name:"YAM FRIES",price:4000,desc:""},
-{type:"item",name:"PLANTAIN",price:3000,desc:""},
-{type:"item",name:"FRENCH FRIES",price:4000,desc:""},
-{type:"item",name:"COLESLAW",price:4000,desc:""},
-{type:"item",name:"CHIPS",price:4000,desc:""},
-{type:"heading",text:"BREAKFAST"},
-{type:"item",name:"ENGLISH BREAKFAST",price:15000,desc:""},
-{type:"item",name:"SPANISH OMELETTE",price:5000,desc:""},
-{type:"item",name:"FRIED PLAIN EGG, BREAD & TEA",price:8000,desc:""},
-{type:"item",name:"BREAD & TEA / COFFEE",price:7000,desc:""},
-{type:"item",name:"BOILED YAM & FISH SAUCE",price:7000,desc:""},
-{type:"item",name:"BOILED SWEET POTATOES",price:5000,desc:""},
-{type:"item",name:"SARDINE SAUCE",price:5000,desc:""},
-{type:"item",name:"EGG SAUCE",price:5000,desc:""},
-{type:"item",name:"TUNA SAUCE",price:5000,desc:""},
-{type:"item",name:"FISH SAUCE",price:5000,desc:""},
-{type:"item",name:"BOILED PLANTAIN",price:5000,desc:""},
-{type:"item",name:"FRIED PLANTAIN & EGG SAUCE",price:7000,desc:""},
-{type:"item",name:"CEREAL (CORNFLAKES OR COCO POPS WITH MILK OR SUGAR)",price:5000,desc:""},
-{type:"heading",text:"BAG"},
-{type:"item",name:"FOOD BAG",price:1000,desc:""},
-{type:"item",name:"FISH BAG",price:1000,desc:""},
-{type:"heading",text:"PASTRIES"},
-{type:"item",name:"FELIZA SIGNATURE CUP CAKES & BUTTERMILK BLUEBERRY MUFFINS",price:2000,desc:""},
-{type:"item",name:"EGG ROLL",price:500,desc:""},
-{type:"item",name:"MEAT PIE",price:1000,desc:""},
-{type:"item",name:"FISH ROLL",price:500,desc:""},
-{type:"item",name:"SAUSAGE ROLL",price:500,desc:""},
-{type:"item",name:"POPCORN",price:500,desc:""}
-];
-function renderDrinks(){
-let dh="";drinksLong.forEach(it=>{if(it.type==="heading"){dh+=`<div class="food-heading">${it.text}</div>`;}else{let p=loc==='vip'?(it.vip||it.pool):(it.pool||it.vip);let lbl=loc==='vip'?'VIP':'POOL SIDE';let priceHtml=p?`N${p.toLocaleString()}<small>${lbl}</small>`:`ASK WAITER<small>${lbl}</small>`;dh+=`<div class="card"><div><b>${it.name}</b></div><div style="text-align:right"><div class="price">${priceHtml}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("drinks-long-list").innerHTML=dh;
-document.getElementById("current-loc-label").textContent = loc==='vip' ? "VIP DRINKS" : "POOL SIDE DRINKS";
+const SHEET_ID="1Id7sEYyOgmpBWUyG8pV_Y0HvVT5Ruzk4bltjjN1ZjvQ";
+let loc='vip', cache={}, drinksLong=[], foodLong=[], roomsList=[], eventsList=[];
+function parseCSV(text){const lines=text.trim().split("\n");return lines.map(line=>{const out=[];let cur="";let inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else inQ=!inQ;}else if(c===','&&!inQ){out.push(cur);cur="";}else cur+=c;}out.push(cur);return out.map(s=>s.trim().replace(/^"|"$/g,''));});}
+function toNum(s){if(!s)return null;const n=parseInt(String(s).replace(/[^0-9]/g,''));return isNaN(n)?null:n;}
+function isNumStr(s){if(!s)return false;return /^[\d,\s₦N]+$/.test(String(s).trim())&&toNum(s)!==null;}
+function cleanName(n){return String(n).replace(/^\d+\.\s*/,'').trim();}
+async function fetchSheet(sheetName){
+  if(cache[sheetName])return cache[sheetName];
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&headers=1`;
+  const res=await fetch(url);const text=await res.text();const rows=parseCSV(text);
+  const items=[];
+  rows.slice(1).forEach(r=>{
+    if(!r[1]||r[1].toLowerCase()==="name")return;
+    const avail=(r[5]||"").toLowerCase();if(avail==="no"||avail==="false"||avail==="0")return;
+    const c2=r[2]||"",c3=r[3]||"",c4=r[4]||"";
+    let cat=r[0]||"",name=cleanName(r[1]),desc="",vip=null,pool=null,price=null;
+    if(isNumStr(c2)&&!isNumStr(c3)){price=toNum(c2);vip=price;pool=price;desc=c3;}
+    else if(!isNumStr(c2)&&isNumStr(c3)){desc=c2;vip=toNum(c3);pool=toNum(c4);price=vip||pool;}
+    else if(!isNumStr(c2)&&!isNumStr(c3)&&isNumStr(c4)){desc=c3||c2;price=toNum(c4);vip=price;pool=price;}
+    else {desc=c2;vip=toNum(c3);pool=toNum(c4);price=vip||pool;}
+    items.push({cat,name,desc,vip,pool,price,rawCat:cat});
+  });
+  cache[sheetName]=items;return items;
 }
-function renderFood(){
-let fh="";foodLong.forEach(it=>{if(it.type==="heading"){fh+=`<div class="food-heading">${it.text}</div>`;if(it.sub){fh+=`<div class="food-subheading">${it.sub}</div>`;}}else{let d=it.desc?`<span class="desc">${it.desc}</span>`:"";fh+=`<div class="card"><div><b>${it.name}</b>${d}</div><div style="text-align:right"><div class="price">N${it.price.toLocaleString()}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("food-long-list").innerHTML=fh;
+// ROOMS & EVENTS Sheet = Name | Price | Guests/Desc | Description
+async function fetchRoomsEvents(sheetName, isEvent){
+  if(cache[sheetName])return cache[sheetName];
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&headers=1`;
+  const res=await fetch(url);const text=await res.text();const rows=parseCSV(text);
+  const items=[];
+  rows.slice(1).forEach(r=>{
+    if(!r[0])return;
+    if(r[0].toLowerCase()==="name"||r[0].toLowerCase()==="category")return;
+    const name=cleanName(r[0]);
+    const price=toNum(r[1]);
+    if(!price) return;
+    let guests="", desc="";
+    if(isEvent){ guests=r[2]||""; desc=r[3]||""; if(guests && guests.length>10 && !/^\d+$/.test(guests.trim())){ desc=guests; guests=""; } }
+    else { desc=r[2]||""; if(r[3] && r[3].length>desc.length) desc=r[3]; }
+    items.push({cat:"",name,desc,price,vip:price,pool:price,rawCat:guests,guests});
+  });
+  cache[sheetName]=items;return items;
+}
+function groupByCat(items){const out=[];let last="";items.forEach(it=>{if(it.cat!==last){out.push({type:"heading",text:it.cat||"MENU"});last=it.cat;}out.push({type:"item",...it});});return out;}
+async function loadAll(){
+  try{
+    const [d,f,r,e]=await Promise.all([fetchSheet("Drinks"),fetchSheet("Food"),fetchRoomsEvents("Rooms",false),fetchRoomsEvents("Events",true)]);
+    drinksLong=groupByCat(d);foodLong=groupByCat(f);roomsList=r;eventsList=e;
+    renderFood();renderRooms();renderEvents();
+    if(!document.getElementById("drinks-list-view").classList.contains("hidden"))renderDrinks();
+  }catch(err){}
+}
+function renderDrinks(){let dh="";drinksLong.forEach(it=>{if(it.type==="heading"){dh+=`<div class="food-heading">${it.text}</div>`;}else{let p=loc==='vip'?(it.vip||it.pool):(it.pool||it.vip);let lbl=loc==='vip'?'VIP':'POOL SIDE';let priceHtml=p?`N${p.toLocaleString()}<small>${lbl}</small>`:`ASK WAITER<small>${lbl}</small>`;dh+=`<div class="card"><div><b>${it.name}</b></div><div style="text-align:right"><div class="price">${priceHtml}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("drinks-long-list").innerHTML=dh||"<p style='text-align:center;color:#aaa'>Loading...</p>";document.getElementById("current-loc-label").textContent=loc==='vip'?"VIP DRINKS":"POOL SIDE DRINKS";}
+function renderFood(){let fh="";foodLong.forEach(it=>{if(it.type==="heading"){fh+=`<div class="food-heading">${it.text}</div>`;}else{let p=it.vip||it.pool||it.price;let d=it.desc?`<span class="desc">${it.desc}</span>`:"";fh+=`<div class="card"><div><b>${it.name}</b>${d}</div><div style="text-align:right"><div class="price">N${p?p.toLocaleString():"—"}</div><button class="view">View Menu</button></div></div>`;}});document.getElementById("food-long-list").innerHTML=fh||"<p style='text-align:center;color:#aaa'>Loading...</p>";}
+function renderRooms(){
+  let h="";roomsList.forEach((it,i)=>{let p=it.price;let num=i+1;h+=`<div class="card"><div><b>${num}. ${it.name.toUpperCase()}</b><br><span style="font-size:12px;color:#aaa">${it.desc||""}</span></div><div style="text-align:right"><div class="price">N${p?p.toLocaleString():"—"}<small>PER NIGHT</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=${encodeURIComponent("Hello Feliza, I want to book "+it.name+" - N"+(p||""))}" target="_blank" rel="noopener"><button class="view">Book</button></a></div></div>`;});
+  document.getElementById("rooms-long-list").innerHTML=h;
+}
+function renderEvents(){
+  let h="";eventsList.forEach((it,i)=>{let p=it.price;let num=i+1;let badgeText="";let g=String(it.guests||it.rawCat||"").trim();if(g){ if(/guest/i.test(g)) badgeText="👥 "+g.toUpperCase(); else if(/\d/.test(g)) badgeText="👥 "+g.replace(/[^0-9,]/g,'')+" GUESTS"; else badgeText="👥 "+g.toUpperCase(); }let isGrand=it.name.toUpperCase().includes("GRAND");let extraStyle=isGrand?` style="border:2px solid #FFC700;background:#2a2a00"`:"";let displayName=it.name.toUpperCase();if(isGrand&&!displayName.includes("BEST VALUE"))displayName+=" ⭐ BEST VALUE";h+=`<div class="event-card"${extraStyle}><h4>${num}. ${displayName}</h4>${badgeText?`<span class="badge">${badgeText}</span>`:""}<p>${it.desc||""}</p><div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px"><div class="price" style="font-size:18px">₦${p?p.toLocaleString():"—"}<small>RENTAL</small></div><a href="https://api.whatsapp.com/send?phone=2348159651512&text=${encodeURIComponent("Hello Feliza, I want to book "+it.name)}" target="_blank" rel="noopener"><button class="view" style="padding:8px 16px">Book Now</button></a></div></div>`;});
+  document.getElementById("events-long-list").innerHTML=h;
 }
 function chooseDrinkLoc(l){loc=l;document.getElementById("drinks-chooser").classList.add("hidden");document.getElementById("drinks-list-view").classList.remove("hidden");renderDrinks();window.scrollTo(0,0);}
 function backToDrinkChooser(){document.getElementById("drinks-list-view").classList.add("hidden");document.getElementById("drinks-chooser").classList.remove("hidden");}
-renderFood();
-function showMain(id,b){
-  document.querySelectorAll('.main-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
-  ['drinks','food','rooms','events'].forEach(s=>document.getElementById(s).classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-  if(id==='drinks'){backToDrinkChooser();}
-}
+function showMain(id,b){document.querySelectorAll('.main-menu button').forEach(x=>x.classList.remove('active'));b.classList.add('active');['drinks','food','rooms','events'].forEach(s=>document.getElementById(s).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='drinks'){backToDrinkChooser();}}
+loadAll();
 </script>
 </body>
 </html>
